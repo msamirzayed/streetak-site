@@ -361,6 +361,19 @@ document.querySelectorAll('.tile .burst').forEach(function(b){var f=b.querySelec
   body::after{display:none}
   .track{transform:none}
 }
+
+/* ---------- real game ---------- */
+#real h2.big{font-size:clamp(46px,7.2vw,96px)}
+@media (max-width:759px){.hero video{inset:0 0 auto 0;height:52%;-webkit-mask-image:linear-gradient(180deg,#000 72%,transparent);mask-image:linear-gradient(180deg,#000 72%,transparent)}.hero{background:var(--asphalt)}}
+.reals{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:34px}
+.rcard{margin:0}
+.rwin{position:relative;aspect-ratio:1280/592;background:#000;border-radius:6px;overflow:hidden;box-shadow:0 0 0 2px var(--chalk),8px 8px 0 var(--fire)}
+.rwin video{width:100%;height:100%;object-fit:cover;display:block}
+.rdot{position:absolute;top:10px;inset-inline-start:10px;width:10px;height:10px;border-radius:50%;background:var(--fire);box-shadow:0 0 10px var(--fire)}
+.rcard figcaption{margin-top:16px;font-family:var(--hand);font-size:20px}
+.ctaline{text-align:center;margin:44px 0 0}
+.artnote{margin:22px 0 0;text-align:center;font-size:13px;opacity:.6}
+@media (max-width:899px){.reals{grid-template-columns:1fr;gap:30px}}
 </style>
 </head>
 <body>
@@ -375,11 +388,11 @@ document.querySelectorAll('.tile .burst').forEach(function(b){var f=b.querySelec
 <main>
 <!-- HERO -->
 <section class="hero" id="hero">
-  <video id="heroVid" muted loop playsinline autoplay preload="auto" poster="assets/img/hero_wide.webp" aria-hidden="true"></video>
+  <video id="heroVid" muted loop playsinline autoplay preload="auto" poster="assets/img/hero_real.jpg" aria-hidden="true"></video>
   <script>
   (function(){var v=document.getElementById('heroVid');var tall=window.innerWidth/window.innerHeight<1.05;
-  var A=window.ART||{};v.poster=tall?(A.hero_poster_tall||'assets/img/hero_tall.webp'):(A.hero_poster_wide||'assets/img/hero_wide.webp');
-  v.src=tall?'assets/video/hero_tall.mp4':'assets/video/hero_wide.mp4';
+  v.poster='assets/img/hero_real.jpg';
+  v.src='assets/video/hero_real.mp4';
   if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.preload='none';}})();
   </script>
   <div class="wrap">
@@ -574,6 +587,7 @@ var EN={
  c4n:'Outer space',c4:'Low gravity. Heavy embarrassment.',
  c5n:'The cage',c5:'Walk in. Walk out a legend — or a meme.',
  c6n:'Neon Cairo',c6:'Cairo at night hits different.',
+
  weather:'<span class="w w1">Day</span> <span class="w w2">Night</span> <span class="w w3">Even in the rain</span>',
  skK:'The skills',skH:'Humiliate<br>them<span class="o">.</span>',skL:'You keep the ball. They keep the shame.',
  tap:'Listen',tap2:'Listen',tap3:'Listen',tap4:'Listen',
@@ -651,6 +665,7 @@ var vio=('IntersectionObserver' in window)?new IntersectionObserver(function(es)
   else if(v)v.pause()})},{threshold:.25}):null;
 tiles.forEach(function(t){if(vio)vio.observe(t);t.addEventListener('click',function(){if(cur===t){stopAudio();return}playLine(t.dataset.audio,t)})});
 document.getElementById('mic').addEventListener('click',function(){var m=this;if(m.classList.contains('on')){stopAudio();return}playLine('assets/audio/goal_us_0.mp3',null);m.classList.add('on')});
+
 
 
 /* hero video: pause when off-screen */
