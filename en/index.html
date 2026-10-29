@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ستريتك — كورة الشارع</title>
 <meta name="description" content="ستريتك: كورة شارع أونلاين مع صحابك. ببلاش، من غير تحميل. انزل العب.">
-<meta name="theme-color" content="#e8b75a">
+<meta name="theme-color" content="#16122e">
 <meta property="og:title" content="ستريتك — الكورة رجعت الشارع">
 <meta property="og:description" content="كورة شارع أونلاين مع صحابك. ببلاش، من غير تحميل.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -69,6 +69,24 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .navr{display:flex;align-items:center;gap:10px}
 .lang{font-weight:700;font-size:14px;background:var(--paper);border:2.5px solid var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
 .nav .btn{font-size:20px;padding:10px 20px 9px;box-shadow:0 4px 0 #000;border-width:2.5px}
+
+/* nav: dark bar over the sunny hero (founder, 29 Oct) */
+body::before{background:var(--ink)}
+.nav{background:var(--ink);border-bottom:3px solid #000;box-shadow:0 6px 18px rgba(22,18,46,.28)}
+.brand{color:var(--sun)}
+.brand i{border-color:var(--sun)}
+.lang{background:transparent;color:var(--paper);border-color:rgba(255,247,232,.7)}
+.lang:hover{background:var(--ink2)}
+.nav .b-ink{background:var(--sun);color:var(--ink);box-shadow:0 4px 0 #000}
+
+/* store buttons in the hero (founder, 29 Oct) */
+.stores{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.store{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--paper);border:2.5px solid var(--ink);border-radius:14px;padding:7px 16px 7px 14px;box-shadow:0 4px 0 #000;text-decoration:none;transition:transform .15s}
+.store:hover{transform:translateY(-2px)}
+.store svg{width:26px;height:26px;flex:none;fill:none;stroke:var(--sun);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.store span{display:flex;flex-direction:column;line-height:1.1;text-align:start}
+.store small{font-size:11px;opacity:.8}
+.store b{font-family:var(--body);font-size:17px;font-weight:800;letter-spacing:.2px;direction:ltr}
 
 /* hero */
 .hero{position:relative;overflow:hidden;background:var(--sun);padding-block:clamp(30px,5vw,64px) clamp(40px,6vw,80px)}
@@ -266,6 +284,10 @@ footer a:hover{color:var(--paper)}
           <a class="btn b-ink" href="https://play.streetak.com" data-t="cta">انزل العب</a>
           <a class="btn b-paper" href="#courts" data-t="cta3">شوف الملاعب</a>
         </div>
+        <div class="stores">
+          <a class="store" href="https://play.google.com/store/apps/details?id=com.streetak.football" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5v17l14-8.5z"/></svg><span><small data-t="gpS">نزّلها من</small><b>Google Play</b></span></a>
+          <a class="store" href="https://apps.apple.com/app/id6826257319" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18h2"/></svg><span><small data-t="asS">نزّلها من</small><b>App Store</b></span></a>
+        </div>
         <div class="chips"><span data-t="c1">ببلاش</span><span data-t="c2">من غير تحميل</span><span data-t="c3">مع صحابك</span></div>
       </div>
     </div>
@@ -359,7 +381,7 @@ footer a:hover{color:var(--paper)}
 <script>
 (function(){
 var d=document.documentElement;d.lang='ar';d.dir='rtl';
-var T={ar:{},en:{navGo:'Play',kick:'Online street football',h1a:'Football is back',h1b:'on the street.',sub:'Your crew is on the pitch right now, roasting you for not showing up. Go shut them up.',cta:'Play now',cta3:'See the courts',c1:'Free',c2:'No download',c3:'With your crew',st1:'Nutmeg!',st2:'GOAL',
+var T={ar:{},en:{navGo:'Play',gpS:'Get it on',asS:'Download on the',kick:'Online street football',h1a:'Football is back',h1b:'on the street.',sub:'Your crew is on the pitch right now, roasting you for not showing up. Go shut them up.',cta:'Play now',cta3:'See the courts',c1:'Free',c2:'No download',c3:'With your crew',st1:'Nutmeg!',st2:'GOAL',
 cK:'Courts',cH:'Pick your pitch.',cL:'The ground you will win on… or the one you will get embarrassed on, in front of the whole block.',t1:'Under the pyramids',t1p:'Sand and tent fabric. Heavy legs.',t2:'Neon Cairo',t2p:'At night, the floor glows under your feet.',t3:'In space',t3p:'Gravity is light. The shame is heavy.',t4p:'At night in the rain, the ball skids.',t5p:'Alley asphalt, the neighbours watching.',n1:'On the rooftop',n2:'Our alley',n4:'The cage',nMore:'And more courts waiting inside the game.',
 sK:'Skills',sH:'Embarrass them.',sL:'The ball is yours… the shame is theirs. Tap a move and hear the commentator.',m1:'Nutmeg',m1p:'Through his legs, in front of the whole block.',m2:'Stepover',m2p:'Left… right… and he is still looking for you.',m3:'Strike',m3p:'A shot that shakes the net.',m4:'Rocket',m4p:'The keeper will remember it till the end of the year.',m5:'Try them yourself',m5p:'Nutmegs, chips, rainbows, spins… all waiting for you on the pitch.',m6:'GOAL',m6p:'And an Egyptian commentator screaming your name.',
 qK:'The crew',qH:'Roll with your squad.',qL:'Football without your friends has no taste.',f1:'Make a room',f1p:'A room with a code. Send it to your friends and the match starts.',f2:'A club with your name',f2p:'Your colours, your crest, every match.',f3:'Your own style',f3p:'Kits and numbers you pick yourself.',rm:'Room code',rmGo:'Let\'s go',
