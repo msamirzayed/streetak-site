@@ -179,6 +179,18 @@ html[lang=en] .move b{text-transform:uppercase}
 .mcta span{color:rgba(255,247,232,.85)}
 @keyframes pulse{50%{transform:scale(1.15)}}
 
+/* characters «شخصياتي» */
+.chars{background:var(--sun);color:var(--ink)}
+.chars .eyebrow{background:var(--ink);color:var(--sun)}
+.chgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px}
+.chcard{margin:0;background:var(--paper);border:3px solid var(--ink);border-radius:20px;overflow:hidden;box-shadow:0 7px 0 var(--ink)}
+.chcard img{display:block;width:100%;height:auto;aspect-ratio:1280/589;object-fit:cover;border-bottom:3px solid var(--ink)}
+.chcard figcaption{padding:14px 18px 16px}
+.chcard b{display:block;font-family:var(--disp);font-weight:400;font-size:clamp(28px,3vw,40px);line-height:1}
+html[lang=en] .chcard b{text-transform:uppercase}
+.chcard span{display:block;margin-top:6px;font-size:15px;line-height:1.55}
+@media (max-width:700px){.chgrid{grid-template-columns:1fr;gap:14px}.chcard figcaption{padding:10px 12px 12px}}
+
 /* squad */
 .squad{background:var(--nile);color:var(--paper)}
 .squad .eyebrow{background:var(--sun);color:var(--ink)}
@@ -349,6 +361,20 @@ footer a:hover{color:var(--paper)}
   </div>
 </section>
 
+<section class="sec chars" id="chars">
+  <div class="wrap">
+    <p class="eyebrow" data-t="kK">شخصياتي</p>
+    <h2 class="disp" data-t="kH">إنت مين النهارده؟</h2>
+    <p class="lead" data-t="kL">اعمل لحد ٣ شخصيات بمراكز مختلفة، حتى الحارس. كل واحدة بشكلها وليفلها ومهاراتها.</p>
+    <div class="chgrid">
+      <figure class="chcard"><img src="assets/img/ch/chars.jpg" alt="" loading="lazy" width="1280" height="589"><figcaption><b data-t="k1">شخصياتي</b><span data-t="k1p">مهاجم ووسط ومدافع… وكل واحد بليفله.</span></figcaption></figure>
+      <figure class="chcard"><img src="assets/img/ch/place.jpg" alt="" loading="lazy" width="1280" height="589"><figcaption><b data-t="k2">وحارس كمان</b><span data-t="k2p">اختار مركزك، والعب في الجول في الخماسي.</span></figcaption></figure>
+      <figure class="chcard"><img src="assets/img/ch/look.jpg" alt="" loading="lazy" width="1280" height="589"><figcaption><b data-t="k3">شكلك</b><span data-t="k3p">الوش والبشرة والشعر زي ما تحب.</span></figcaption></figure>
+      <figure class="chcard"><img src="assets/img/ch/kit.jpg" alt="" loading="lazy" width="1280" height="589"><figcaption><b data-t="k4">ألوان طقمك</b><span data-t="k4p">القميص والرقم بألوانك إنت.</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
 <section class="sec squad" id="squad">
   <div class="wrap sgrid">
     <div>
@@ -396,6 +422,7 @@ var d=document.documentElement;d.lang='ar';d.dir='rtl';
 var T={ar:{},en:{navGo:'Play',gpS:'Get it on',asS:'Download on the',kick:'Online street football',h1a:'Football is back',h1b:'on the street.',sub:'Your crew is on the pitch right now, roasting you for not showing up. Go shut them up.',cta:'Play now',cta3:'See the courts',c1:'Free',c2:'No download',c3:'With your crew',st1:'Nutmeg!',st2:'GOAL',
 cK:'Courts',cH:'Pick your pitch.',cL:'The ground you will win on… or the one you will get embarrassed on, in front of the whole block.',t1:'Under the pyramids',t1p:'Sand and tent fabric. Heavy legs.',t2:'Neon Cairo',t2p:'At night, the floor glows under your feet.',t3:'In space',t3p:'Gravity is light. The shame is heavy.',t4p:'At night in the rain, the ball skids.',t5p:'Alley asphalt, the neighbours watching.',n1:'On the rooftop',n2:'Our alley',n4:'The cage',nMore:'And more courts waiting inside the game.',
 sK:'Skills',sH:'Embarrass them.',sL:'The ball is yours… the shame is theirs. Tap a move and hear the commentator.',m1:'Nutmeg',m1p:'Through his legs, in front of the whole block.',m2:'Stepover',m2p:'Left… right… and he is still looking for you.',m3:'Strike',m3p:'A shot that shakes the net.',m4:'Rocket',m4p:'The keeper will remember it till the end of the year.',m5:'Try them yourself',m5p:'Nutmegs, chips, rainbows, spins… all waiting for you on the pitch.',m6:'GOAL',m6p:'And an Egyptian commentator screaming your name.',
+kK:'My characters',kH:'Who are you today?',kL:'Make up to 3 characters in different positions, keeper included. Each with its own look, level and skills.',k1:'My characters',k1p:'A striker, a midfielder, a defender… each with his own level.',k2:'A keeper too',k2p:'Pick your position, and play in goal in five-a-side.',k3:'Your look',k3p:'Face, skin and hair, the way you like.',k4:'Kit colours',k4p:'Your shirt and your number, in your colours.',
 qK:'The crew',qH:'Roll with your squad.',qL:'Football without your friends has no taste.',f1:'Make a room',f1p:'A room with a code. Send it to your friends and the match starts.',f2:'A club with your name',f2p:'Your colours, your crest, every match.',f3:'Your own style',f3p:'Kits and numbers you pick yourself.',rm:'Room code',rmGo:'Let\'s go',
 fa:'The match starts',fb:'without you',fl:'No way. Come show them what you got.',cta2:'Play now',wa:'Send it to the crew',priv:'Privacy',cred:'Credits'}};
 var WA={ar:'أنا في ستريتك ومستنيك في الملعب… لو قدّها انزل: https://play.streetak.com',en:'I am on Streetak waiting for you on the pitch… if you dare: https://play.streetak.com'};
