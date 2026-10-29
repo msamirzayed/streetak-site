@@ -255,6 +255,19 @@ footer a:hover{color:var(--paper)}
 @media (max-width:900px){.tabs{display:flex;overflow-x:auto;gap:10px;padding-bottom:6px;scroll-snap-type:x mandatory}.tab{flex:0 0 140px;scroll-snap-align:start;grid-template-columns:1fr}.tab img{width:100%}}
 @media (max-width:600px){.move{padding:8px 8px 12px}.move .th{border-radius:9px;margin-bottom:8px}.move b,.move span{padding-inline:4px}.move .pl{top:14px;inset-inline-end:14px}.tab{flex-basis:120px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* wide screens: the phone sits beside the words and the hero is shorter (founder, 29 Oct) */
+@media (min-width:1100px){
+  .hero{padding-block:44px 56px}
+  .hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:clamp(32px,4vw,64px);align-items:center}
+  .hero-top{flex-direction:column;align-items:flex-start;gap:20px}
+  h1.disp{font-size:clamp(78px,7.4vw,128px)}
+  .side{max-width:30em;padding-bottom:0}
+  .sub{margin-bottom:18px}
+  .hero-phone{margin:0;max-width:none}
+  html[lang=en] .hero .wrap{grid-template-columns:minmax(0,1.12fr) minmax(0,1fr)}
+  html[lang=en] h1.disp{font-size:clamp(62px,5.4vw,80px)}
+}
 </style>
 </head>
 <body>
