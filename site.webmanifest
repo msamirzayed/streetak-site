@@ -1,6 +1,12 @@
 {
   "name": "Streetak: Street Football",
   "short_name": "Streetak",
+  "description": "ستريتك: لعبة كورة شارع أونلاين ببلاش مع صحابك، 3 ضد 3 و5 ضد 5.",
+  "categories": [
+    "games",
+    "sports",
+    "entertainment"
+  ],
   "lang": "ar",
   "dir": "rtl",
   "start_url": "./",
