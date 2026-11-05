@@ -1,48 +1,28 @@
 #!/usr/bin/env node
-// streetak.com: writes the SEO head (title, description, canonical, hreflang, Open Graph, Twitter, JSON-LD) into
-// index.html, and generates en/index.html from index.html + the T.en dictionary in its script, so the English page's
-// raw HTML (what crawlers read first) is English. Usage: node tools/build.js   (no dependencies)
-// Edit the Arabic in index.html (data-t = text, data-ta = alt), its English in T.en, the head words in SEO below.
+// streetak.com: one page per language, each with its own SEO head, from one English template.
+//   source: tools/site/page.html (English; data-t = text, data-ta = alt, data-tl = aria-label, data-tt = title)
+//   words:  tools/i18n/<code>.json  { _meta: where it lives, _seo: the head, _rt: the script's strings, t: the keys }
+//   writes: index.html (English, the default, x-default), ar/, pt-br/, fr/ … , sitemap.xml, and en/ redirects to /
+// Add a language: copy tools/i18n/en.json to tools/i18n/<code>.json, translate it, add the code to LANGS, run this.
+// Usage: node tools/build.js   (no dependencies)
 'use strict';
-const fs = require('fs'), path = require('path'), vm = require('vm');
+const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
 const SITE = 'https://streetak.com';
 const PLAY = 'https://play.google.com/store/apps/details?id=com.streetak.football';
 const APPSTORE = 'https://apps.apple.com/app/id6826257319';
 const WEB_GAME = 'https://play.streetak.com/';
-const OG_AR = SITE + '/assets/img/og.jpg?v=20261105b', OG_EN = SITE + '/assets/img/og-en.jpg?v=20261105b';
+const V = 'v=20261105b';                       // bump when the art or the clips change (browsers keep the old ones)
 const COURTS = ['sayeda', 'riyadh', 'dubai', 'sand', 'roof', 'street', 'neon', 'space', 'turf'];
 const REEL_DURATION = 'PT18S';
+const LANGS = ['en', 'ar', 'pt-BR', 'fr'];     // the order of the language menu; the first is the default at /
+const TODAY = new Date().toISOString().slice(0, 10);
 
-const SEO = {
-  ar: {
-    url: SITE + '/', locale: 'ar_EG', localeAlt: 'en_US',
-    title: 'ستريتك: كورة الشارع | لعبة كورة أونلاين ببلاش مع صحابك',
-    desc: 'ستريتك لعبة كورة شارع أونلاين ببلاش: 3 ضد 3 و5 ضد 5 مع صحابك في أوضة بكود. كوبري وطاقية ولفّة، ٩ ملاعب من السيدة زينب وعند الهرم للدرعية والمارينا، ومعلق مصري. أندرويد وآيفون والمتصفح.',
-    ogTitle: 'ستريتك: كورة الشارع | الكورة رجعت الشارع',
-    ogDesc: 'لعبة كورة شارع أونلاين ببلاش مع صحابك: 3 ضد 3 و5 ضد 5، مهارات الشارع وتعليق مصري. على أندرويد وآيفون والمتصفح.',
-    imgAlt: 'ستريتك: كورة الشارع، لعبة كورة أونلاين مع صحابك',
-    game: 'ستريتك: كورة الشارع',
-    gameDesc: 'لعبة كورة شارع أونلاين ببلاش، 3 ضد 3 و5 ضد 5: لاعيب واحد لكل واحد والكورة حرة، مهارات الشارع (كوبري، طاقية، لفّة، فينتة، تمويه، زحلقة)، ٩ ملاعب: السيدة زينب وفوق السطوح وحارتنا وعند الهرم ونيون القاهرة وملعب الخماسي والفضاء والدرعية وسطوح المارينا، ريبلاي زي التلفزيون، أوض مع صحابك بكود، نوادي ودورات منها دورة رمضان، ومعلق مصري. مفيش حاجة بتتشترى بتقوّي حد على حد.',
-    video: 'ستريتك: ملاعب ولاعيبة كورة الشارع', videoDesc: 'جولة في ملاعب ستريتك التسعة ولاعيبتها: السيدة زينب، الدرعية، سطوح المارينا، الهرم، السطوح، الحارة، نيون القاهرة، الفضاء وملعب الخماسي.',
-    genre: ['رياضة', 'كرة قدم', 'كورة شارع', 'أونلاين'],
-  },
-  en: {
-    url: SITE + '/en/', locale: 'en_US', localeAlt: 'ar_EG',
-    title: 'Streetak: Street Football | Free Online 3v3 & 5v5 Soccer Game',
-    desc: 'Free online street football (soccer) game: 3v3 and 5v5 with friends by room code, street skills, 9 courts from Cairo to Diriyah and Dubai, and Egyptian commentary. On Android, iPhone and the web.',
-    ogTitle: 'Streetak: Street Football | Football is back on the street',
-    ogDesc: 'A free online street football game with your friends: 3v3 and 5v5, street skills and Egyptian commentary. On Android, iPhone and the web.',
-    imgAlt: 'Streetak: Street Football, an online football game with friends',
-    game: 'Streetak: Street Football',
-    gameDesc: 'A free online street football (soccer) game, 3v3 and 5v5: one player each and a free ball, street skills (nutmeg, rainbow, roulette, step-over, fake shot, slide tackle), 9 courts (El-Sayeda Zeinab, a Cairo rooftop, an alley, the pyramids, Neon Cairo, a five-a-side cage, orbit, Diriyah and a Dubai marina rooftop), TV-style replays, rooms with friends by code, clubs and cups including a Ramadan cup, and Egyptian commentary. Nothing you can buy makes anyone stronger.',
-    video: 'Streetak: the street football courts and players', videoDesc: 'A tour of the nine Streetak courts and their players: El-Sayeda Zeinab, Diriyah, the Marina Rooftop, the pyramids, the rooftop, the alley, Neon Cairo, orbit and the five-a-side cage.',
-    genre: ['Sports', 'Football', 'Street football', 'Online multiplayer'],
-  },
-};
-
+const L = LANGS.map(c => JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'i18n', c + '.json'), 'utf8')));
+const TPL = fs.readFileSync(path.join(ROOT, 'tools', 'site', 'page.html'), 'utf8');
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const text = html => html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+const url = m => SITE + m.path;
 
 function faqOf(html) {
   const out = [];
@@ -57,28 +37,28 @@ function faqOf(html) {
 }
 
 function head(lang, html) {
-  const S = SEO[lang];
-  const OG = lang === 'en' ? OG_EN : OG_AR;
+  const m = lang._meta, S = lang._seo;
+  const OG = `${SITE}/assets/img/${m.og}?${V}`;
   const org = SITE + '/#org', site = SITE + '/#website', game = SITE + '/#game';
   const ld = {
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'Organization', '@id': org, name: 'Lamma Labs', url: SITE + '/', email: 'support@streetak.com', logo: SITE + '/icon-512.png' },
-      { '@type': 'WebSite', '@id': site, url: SITE + '/', name: 'ستريتك', alternateName: ['Streetak', 'Streetak: Street Football', 'ستريتك: كورة الشارع'], inLanguage: ['ar', 'en'], publisher: { '@id': org } },
-      { '@type': 'WebPage', '@id': S.url + '#webpage', url: S.url, name: S.title, description: S.desc, inLanguage: lang, isPartOf: { '@id': site }, about: { '@id': game }, primaryImageOfPage: OG },
+      { '@type': 'WebSite', '@id': site, url: SITE + '/', name: 'Streetak', alternateName: ['ستريتك', 'Streetak: Street Football', 'ستريتك: كورة الشارع'], inLanguage: LANGS, publisher: { '@id': org } },
+      { '@type': 'WebPage', '@id': url(m) + '#webpage', url: url(m), name: S.title, description: S.desc, inLanguage: m.code, isPartOf: { '@id': site }, about: { '@id': game }, primaryImageOfPage: OG },
       {
-        '@type': 'VideoGame', '@id': game, name: S.game, alternateName: lang === 'ar' ? ['ستريتك', 'Streetak', 'Streetak: Street Football'] : ['Streetak', 'ستريتك', 'ستريتك: كورة الشارع'],
-        url: S.url, description: S.gameDesc, image: OG,
+        '@type': 'VideoGame', '@id': game, name: S.game, alternateName: ['Streetak', 'ستريتك', 'Streetak: Street Football', 'ستريتك: كورة الشارع'],
+        url: url(m), description: S.gameDesc, image: OG,
         screenshot: COURTS.map(n => `${SITE}/assets/img/k/${n}-w.webp`),
         trailer: { '@type': 'VideoObject', name: S.video, description: S.videoDesc, thumbnailUrl: `${SITE}/assets/video/reel.jpg`,
-          contentUrl: `${SITE}/assets/video/reel.mp4`, uploadDate: '2026-11-05T12:00:00+02:00', duration: REEL_DURATION, inLanguage: lang },
+          contentUrl: `${SITE}/assets/video/reel.mp4`, uploadDate: '2026-11-05T12:00:00+02:00', duration: REEL_DURATION, inLanguage: m.code },
         genre: S.genre, gamePlatform: ['Android', 'iOS', 'Web browser'], operatingSystem: 'Android, iOS, Web',
         applicationCategory: 'GameApplication', applicationSubCategory: 'Sports', playMode: 'MultiPlayer',
-        inLanguage: ['ar', 'en'], isAccessibleForFree: true,
+        inLanguage: ['en', 'ar'], isAccessibleForFree: true,
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: WEB_GAME },
         publisher: { '@id': org }, author: { '@id': org }, sameAs: [PLAY, APPSTORE, WEB_GAME],
       },
-      { '@type': 'FAQPage', '@id': S.url + '#faq', inLanguage: lang, mainEntity: faqOf(html).map(x => ({ '@type': 'Question', name: x.q, acceptedAnswer: { '@type': 'Answer', text: x.a } })) },
+      { '@type': 'FAQPage', '@id': url(m) + '#faq', inLanguage: m.code, mainEntity: faqOf(html).map(x => ({ '@type': 'Question', name: x.q, acceptedAnswer: { '@type': 'Answer', text: x.a } })) },
     ],
   };
   const json = JSON.stringify(ld, null, 1).replace(/</g, '\\u003c');
@@ -86,21 +66,20 @@ function head(lang, html) {
     `<title>${esc(S.title)}</title>`,
     `<meta name="description" content="${esc(S.desc)}">`,
     `<meta name="robots" content="index,follow,max-image-preview:large">`,
-    `<link rel="canonical" href="${S.url}">`,
-    `<link rel="alternate" hreflang="ar" href="${SITE}/">`,
-    `<link rel="alternate" hreflang="en" href="${SITE}/en/">`,
-    `<link rel="alternate" hreflang="x-default" href="${SITE}/">`,
+    `<link rel="canonical" href="${url(m)}">`,
+    ...L.map(o => `<link rel="alternate" hreflang="${o._meta.hreflang}" href="${url(o._meta)}">`),
+    `<link rel="alternate" hreflang="x-default" href="${url(L[0]._meta)}">`,
     `<meta property="og:type" content="website">`,
-    `<meta property="og:site_name" content="${lang === 'ar' ? 'ستريتك' : 'Streetak'}">`,
+    `<meta property="og:site_name" content="${m.code === 'ar' ? 'ستريتك' : 'Streetak'}">`,
     `<meta property="og:title" content="${esc(S.ogTitle)}">`,
     `<meta property="og:description" content="${esc(S.ogDesc)}">`,
-    `<meta property="og:url" content="${S.url}">`,
+    `<meta property="og:url" content="${url(m)}">`,
     `<meta property="og:image" content="${OG}">`,
     `<meta property="og:image:width" content="1200">`,
     `<meta property="og:image:height" content="630">`,
     `<meta property="og:image:alt" content="${esc(S.imgAlt)}">`,
-    `<meta property="og:locale" content="${S.locale}">`,
-    `<meta property="og:locale:alternate" content="${S.localeAlt}">`,
+    `<meta property="og:locale" content="${m.locale}">`,
+    ...L.filter(o => o !== lang).map(o => `<meta property="og:locale:alternate" content="${o._meta.locale}">`),
     `<meta name="twitter:card" content="summary_large_image">`,
     `<meta name="twitter:title" content="${esc(S.ogTitle)}">`,
     `<meta name="twitter:description" content="${esc(S.ogDesc)}">`,
@@ -110,55 +89,78 @@ function head(lang, html) {
   ].join('\n');
 }
 
+function menu(lang) {
+  const m = lang._meta;
+  const items = L.map(o => {
+    const om = o._meta, cur = o === lang ? ' aria-current="page"' : '';
+    return `<li><a href="${om.path}" hreflang="${om.hreflang}" lang="${om.code}" data-code="${om.code}"${cur}>${om.name}<small>${om.short}</small></a></li>`;
+  }).join('');
+  return `<details class="langs"><summary aria-label="${esc(lang._rt.langLabel)}"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9S14.6 18.4 12 21M12 3C9.4 5.6 8.2 8.6 8.2 12S9.4 18.4 12 21"/></svg><span>${m.short}</span><i aria-hidden="true">▾</i></summary><ul>${items}</ul></details>`;
+}
+
 const SEO_RE = /(<!-- seo:start[^>]*-->\n)[\s\S]*?(<!-- seo:end -->)/;
-function withHead(html, lang) {
-  if (!SEO_RE.test(html)) throw new Error('no <!-- seo:start --> … <!-- seo:end --> block');
-  return html.replace(SEO_RE, (_, a, b) => a + head(lang, html) + '\n' + b);
-}
-
-function replaceOnce(s, a, b) {
-  const n = s.split(a).length - 1;
-  if (n !== 1) throw new Error(`expected one ${JSON.stringify(a)}, found ${n}`);
-  return s.replace(a, b);
-}
-
-// --- Arabic page: only its head is written
-const srcPath = path.join(ROOT, 'index.html');
-let ar = fs.readFileSync(srcPath, 'utf8');
-ar = withHead(ar, 'ar');
-fs.writeFileSync(srcPath, ar);
-
-// --- English page, from the Arabic one
-const m = ar.match(/var T=(\{ar:\{\},en:\{[\s\S]*?\}\});/);
-if (!m) throw new Error('T dictionary not found');
-const EN = vm.runInNewContext('(' + m[1] + ')').en;
-const missing = new Set();
-let en = ar;
-en = en.replace(/<([a-z0-9]+)([^>]*?)\sdata-t="([^"]+)"([^>]*)>([\s\S]*?)<\/\1>/g, (all, tag, pre, key, post) => {
-  if (EN[key] == null) { missing.add(key); return all; }
-  return `<${tag}${pre} data-t="${key}"${post}>${EN[key]}</${tag}>`;
-});
-en = en.replace(/<img\b[^>]*\sdata-ta="([^"]+)"[^>]*>/g, (tag, key) => {
-  if (EN[key] == null) { missing.add(key); return tag; }
-  return tag.replace(/\salt="[^"]*"/, ` alt="${esc(EN[key])}"`);
-});
-for (const [attr, name] of [['data-tl', 'aria-label'], ['data-tt', 'title']]) {
-  en = en.replace(new RegExp(`<[a-z][^>]*\\s${attr}="([^"]+)"[^>]*>`, 'g'), (tag, key) => {
-    if (EN[key] == null) { missing.add(key); return tag; }
-    return tag.replace(new RegExp(`\\s${name}="[^"]*"`), ` ${name}="${esc(EN[key])}"`);
+function page(lang) {
+  const m = lang._meta, T = lang.t, missing = new Set();
+  let h = TPL.replace('{{lang}}', m.code).replace('{{dir}}', m.dir).replace('{{code}}', m.code);
+  h = h.replace(/<([a-z0-9]+)([^>]*?)\sdata-t="([^"]+)"([^>]*)>([\s\S]*?)<\/\1>/g, (all, tag, pre, key, post) => {
+    if (T[key] == null) { missing.add(key); return all; }
+    return `<${tag}${pre} data-t="${key}"${post}>${T[key]}</${tag}>`;
   });
+  h = h.replace(/<img\b[^>]*\sdata-ta="([^"]+)"[^>]*>/g, (tag, key) => {
+    if (T[key] == null) { missing.add(key); return tag; }
+    return tag.replace(/\salt="[^"]*"/, ` alt="${esc(T[key])}"`);
+  });
+  for (const [attr, name] of [['data-tl', 'aria-label'], ['data-tt', 'title']]) {
+    h = h.replace(new RegExp(`<[a-z][^>]*\\s${attr}="([^"]+)"[^>]*>`, 'g'), (tag, key) => {
+      if (T[key] == null) { missing.add(key); return tag; }
+      return tag.replace(new RegExp(`\\s${name}="[^"]*"`), ` ${name}="${esc(T[key])}"`);
+    });
+  }
+  if (missing.size) throw new Error(`${m.code}: missing ${[...missing].join(', ')}`);
+  h = h.replace('<!-- langs -->', menu(lang));
+  h = h.replace('/*rt*/{}/*/rt*/', JSON.stringify(lang._rt).replace(/</g, '\\u003c'));
+  h = h.replace('/*pages*/{}/*/pages*/', JSON.stringify(Object.fromEntries(L.map(o => [o._meta.code, o._meta.path]))));
+  h = h.replace(/href="credits\.html"/g, `href="${m.credits}"`);
+  if (m.path !== '/') {
+    const dir = m.path.replace(/^\//, '');
+    h = h.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<base href="/">');
+    h = h.replace(/href="#([a-z][\w-]*)"/g, `href="${dir}#$1"`);   // with <base href="/">, keep in-page links on this page
+  }
+  h = h.replace(SEO_RE, (_, a, b) => a + head(lang, h) + '\n' + b);
+  h = h.replace('<!doctype html>', '<!doctype html>\n<!-- GENERATED by tools/build.js from tools/site/page.html and tools/i18n: do not edit by hand -->');
+  const out = path.join(ROOT, m.path, 'index.html');
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+  fs.writeFileSync(out, h);
+  return out;
 }
-if (missing.size) throw new Error('T.en is missing: ' + [...missing].join(', '));
-en = replaceOnce(en, '<html lang="ar" dir="rtl">', '<html lang="en" dir="ltr">');
-en = replaceOnce(en, '<meta charset="utf-8">', '<meta charset="utf-8">\n<base href="/">');
-en = replaceOnce(en, '<a class="lang" id="lang" href="en/" hreflang="en" lang="en">EN</a>', '<a class="lang" id="lang" href="/" hreflang="ar" lang="ar">عربي</a>');
-en = en.replace(/href="credits\.html"/g, 'href="en/credits.html"');
-en = en.replace(/href="#([a-z][\w-]*)"/g, 'href="en/#$1"'); // with <base href="/">, keep in-page links on /en/
-en = en.replace(SEO_RE, (_, a, b) => a + head('en', en) + '\n' + b);
-en = en.replace('<!doctype html>', '<!doctype html>\n<!-- GENERATED by tools/build.js from index.html and T.en: do not edit by hand -->');
-fs.writeFileSync(path.join(ROOT, 'en', 'index.html'), en);
 
-// Arabic left in the English page's markup (outside scripts): printed for a look
-const body = en.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '');
-const left = (body.match(/[^<>]*[؀-ۿ][^<>]*/g) || []).map(s => s.trim()).filter(Boolean);
-console.log('index.html: head written · en/index.html: generated' + (left.length ? '\nArabic left in en/index.html: ' + left.join(' | ') : ''));
+const written = L.map(page);
+
+// the old English address: /en/ and /en/credits.html now live at / and /credits.html
+const redirect = to => `<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><title>Streetak</title><meta name="robots" content="noindex">` +
+  `<link rel="canonical" href="${SITE}${to}"><meta http-equiv="refresh" content="0; url=${to}"><script>location.replace(${JSON.stringify(to)}+location.hash)</script></head>` +
+  `<body><a href="${to}">Streetak</a></body></html>\n`;
+fs.mkdirSync(path.join(ROOT, 'en'), { recursive: true });
+fs.writeFileSync(path.join(ROOT, 'en', 'index.html'), redirect('/'));
+fs.writeFileSync(path.join(ROOT, 'en', 'credits.html'), redirect('/credits.html'));
+
+// sitemap: every language page with its alternates and the courts' pictures; the credits in English and Arabic
+const alt = list => list.map(([hl, u]) => `<xhtml:link rel="alternate" hreflang="${hl}" href="${u}"/>`).join('\n');
+const pages = L.map(o => [o._meta.hreflang, url(o._meta)]).concat([['x-default', url(L[0]._meta)]]);
+const imgs = COURTS.map(c => `<image:image><image:loc>${SITE}/assets/img/k/${c}-w.webp</image:loc></image:image>`).join('\n');
+const cred = [['en', SITE + '/credits.html'], ['ar', SITE + '/ar/credits.html'], ['x-default', SITE + '/credits.html']];
+const sm = ['<?xml version="1.0" encoding="UTF-8"?>',
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
+  ...L.map(o => `<url><loc>${url(o._meta)}</loc><lastmod>${TODAY}</lastmod>\n${alt(pages)}\n${imgs}</url>`),
+  ...cred.slice(0, 2).map(([, u]) => `<url><loc>${u}</loc><lastmod>${TODAY}</lastmod>\n${alt(cred)}</url>`),
+  '</urlset>', ''].join('\n');
+fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sm);
+
+// a word left in another language's script on a page (outside scripts): printed for a look
+for (const f of written) {
+  const h = fs.readFileSync(f, 'utf8').replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<details class="langs">[\s\S]*?<\/details>/, '');
+  const isAr = f.includes(path.sep + 'ar' + path.sep);
+  const left = (h.match(isAr ? /[^<>]*\b(the|and|your)\b[^<>]*/g : /[^<>]*[؀-ۿ][^<>]*/g) || []).map(s => s.trim()).filter(Boolean);
+  console.log(path.relative(ROOT, f) + (left.length ? '  left: ' + left.slice(0, 5).join(' | ') : ''));
+}
+console.log('sitemap.xml, en/ redirects');
