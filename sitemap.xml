@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-<url><loc>https://streetak.com/</loc><lastmod>2026-10-29</lastmod>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<url><loc>https://streetak.com/</loc><lastmod>2026-11-05</lastmod>
 <xhtml:link rel="alternate" hreflang="ar" href="https://streetak.com/"/>
 <xhtml:link rel="alternate" hreflang="en" href="https://streetak.com/en/"/>
-<xhtml:link rel="alternate" hreflang="x-default" href="https://streetak.com/"/></url>
-<url><loc>https://streetak.com/en/</loc><lastmod>2026-10-29</lastmod>
+<xhtml:link rel="alternate" hreflang="x-default" href="https://streetak.com/"/>
+<image:image><image:loc>https://streetak.com/assets/img/k/sayeda-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/riyadh-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/dubai-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/sand-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/roof-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/street-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/neon-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/space-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/turf-w.webp</image:loc></image:image></url>
+<url><loc>https://streetak.com/en/</loc><lastmod>2026-11-05</lastmod>
 <xhtml:link rel="alternate" hreflang="ar" href="https://streetak.com/"/>
 <xhtml:link rel="alternate" hreflang="en" href="https://streetak.com/en/"/>
-<xhtml:link rel="alternate" hreflang="x-default" href="https://streetak.com/"/></url>
-<url><loc>https://streetak.com/credits.html</loc><lastmod>2026-10-28</lastmod>
+<xhtml:link rel="alternate" hreflang="x-default" href="https://streetak.com/"/>
+<image:image><image:loc>https://streetak.com/assets/img/k/sayeda-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/riyadh-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/dubai-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/sand-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/roof-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/street-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/neon-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/space-w.webp</image:loc></image:image>
+<image:image><image:loc>https://streetak.com/assets/img/k/turf-w.webp</image:loc></image:image></url>
+<url><loc>https://streetak.com/credits.html</loc><lastmod>2026-11-05</lastmod>
 <xhtml:link rel="alternate" hreflang="ar" href="https://streetak.com/credits.html"/>
 <xhtml:link rel="alternate" hreflang="en" href="https://streetak.com/en/credits.html"/>
 <xhtml:link rel="alternate" hreflang="x-default" href="https://streetak.com/credits.html"/></url>
-<url><loc>https://streetak.com/en/credits.html</loc><lastmod>2026-10-28</lastmod>
+<url><loc>https://streetak.com/en/credits.html</loc><lastmod>2026-11-05</lastmod>
 <xhtml:link rel="alternate" hreflang="ar" href="https://streetak.com/credits.html"/>
 <xhtml:link rel="alternate" hreflang="en" href="https://streetak.com/en/credits.html"/>
 <xhtml:link rel="alternate" hreflang="x-default" href="https://streetak.com/credits.html"/></url>

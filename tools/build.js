@@ -10,29 +10,33 @@ const SITE = 'https://streetak.com';
 const PLAY = 'https://play.google.com/store/apps/details?id=com.streetak.football';
 const APPSTORE = 'https://apps.apple.com/app/id6826257319';
 const WEB_GAME = 'https://play.streetak.com/';
-const OG = SITE + '/assets/img/og.jpg';
+const OG_AR = SITE + '/assets/img/og.jpg', OG_EN = SITE + '/assets/img/og-en.jpg';
+const COURTS = ['sayeda', 'riyadh', 'dubai', 'sand', 'roof', 'street', 'neon', 'space', 'turf'];
+const REEL_DURATION = 'PT18S';
 
 const SEO = {
   ar: {
     url: SITE + '/', locale: 'ar_EG', localeAlt: 'en_US',
     title: 'ستريتك: كورة الشارع | لعبة كورة أونلاين ببلاش مع صحابك',
-    desc: 'ستريتك لعبة كورة شارع أونلاين ببلاش: 3 ضد 3 و5 ضد 5 مع صحابك في أوضة بكود. كوبري وطاقية ولفّة، ملاعب فوق السطوح وفي الحارة وعند الهرم، وتعليق مصري. أندرويد وآيفون والمتصفح.',
+    desc: 'ستريتك لعبة كورة شارع أونلاين ببلاش: 3 ضد 3 و5 ضد 5 مع صحابك في أوضة بكود. كوبري وطاقية ولفّة، ٩ ملاعب من السيدة زينب وعند الهرم للدرعية والمارينا، ومعلق مصري. أندرويد وآيفون والمتصفح.',
     ogTitle: 'ستريتك: كورة الشارع | الكورة رجعت الشارع',
     ogDesc: 'لعبة كورة شارع أونلاين ببلاش مع صحابك: 3 ضد 3 و5 ضد 5، مهارات الشارع وتعليق مصري. على أندرويد وآيفون والمتصفح.',
     imgAlt: 'ستريتك: كورة الشارع، لعبة كورة أونلاين مع صحابك',
     game: 'ستريتك: كورة الشارع',
-    gameDesc: 'لعبة كورة شارع أونلاين ببلاش، 3 ضد 3 و5 ضد 5: لاعيب واحد لكل واحد والكورة حرة، مهارات الشارع (كوبري، طاقية، لفّة، فينتة، تمويه، زحلقة)، ملاعب فوق السطوح وفي الحارة وعند الهرم والقاهرة نيون والفضاء، أوض مع صحابك بكود، نوادي ودورات منها دورة رمضان، وتعليق مصري. مفيش حاجة بتتشترى بتقوّي حد على حد.',
+    gameDesc: 'لعبة كورة شارع أونلاين ببلاش، 3 ضد 3 و5 ضد 5: لاعيب واحد لكل واحد والكورة حرة، مهارات الشارع (كوبري، طاقية، لفّة، فينتة، تمويه، زحلقة)، ٩ ملاعب: السيدة زينب وفوق السطوح وحارتنا وعند الهرم ونيون القاهرة وملعب الخماسي والفضاء والدرعية وسطوح المارينا، ريبلاي زي التلفزيون، أوض مع صحابك بكود، نوادي ودورات منها دورة رمضان، ومعلق مصري. مفيش حاجة بتتشترى بتقوّي حد على حد.',
+    video: 'ستريتك: ملاعب ولاعيبة كورة الشارع', videoDesc: 'جولة في ملاعب ستريتك التسعة ولاعيبتها: السيدة زينب، الدرعية، سطوح المارينا، الهرم، السطوح، الحارة، نيون القاهرة، الفضاء وملعب الخماسي.',
     genre: ['رياضة', 'كرة قدم', 'كورة شارع', 'أونلاين'],
   },
   en: {
     url: SITE + '/en/', locale: 'en_US', localeAlt: 'ar_EG',
-    title: 'Streetak: Street Football | Free Online 3v3 Soccer Game',
-    desc: 'Free online street football (soccer) game: 3v3 and 5v5 with friends by room code, street skills, Cairo courts and Egyptian commentary. On Android, iPhone and the web.',
+    title: 'Streetak: Street Football | Free Online 3v3 & 5v5 Soccer Game',
+    desc: 'Free online street football (soccer) game: 3v3 and 5v5 with friends by room code, street skills, 9 courts from Cairo to Diriyah and Dubai, and Egyptian commentary. On Android, iPhone and the web.',
     ogTitle: 'Streetak: Street Football | Football is back on the street',
     ogDesc: 'A free online street football game with your friends: 3v3 and 5v5, street skills and Egyptian commentary. On Android, iPhone and the web.',
     imgAlt: 'Streetak: Street Football, an online football game with friends',
     game: 'Streetak: Street Football',
-    gameDesc: 'A free online street football (soccer) game, 3v3 and 5v5: one player each and a free ball, street skills (nutmeg, rainbow, roulette, step-over, fake shot, slide tackle), courts on a Cairo rooftop, in an alley, by the pyramids, Neon Cairo and space, rooms with friends by code, clubs and cups including a Ramadan cup, and Egyptian commentary. Nothing you can buy makes anyone stronger.',
+    gameDesc: 'A free online street football (soccer) game, 3v3 and 5v5: one player each and a free ball, street skills (nutmeg, rainbow, roulette, step-over, fake shot, slide tackle), 9 courts (El-Sayeda Zeinab, a Cairo rooftop, an alley, the pyramids, Neon Cairo, a five-a-side cage, orbit, Diriyah and a Dubai marina rooftop), TV-style replays, rooms with friends by code, clubs and cups including a Ramadan cup, and Egyptian commentary. Nothing you can buy makes anyone stronger.',
+    video: 'Streetak: the street football courts and players', videoDesc: 'A tour of the nine Streetak courts and their players: El-Sayeda Zeinab, Diriyah, the Marina Rooftop, the pyramids, the rooftop, the alley, Neon Cairo, orbit and the five-a-side cage.',
     genre: ['Sports', 'Football', 'Street football', 'Online multiplayer'],
   },
 };
@@ -54,6 +58,7 @@ function faqOf(html) {
 
 function head(lang, html) {
   const S = SEO[lang];
+  const OG = lang === 'en' ? OG_EN : OG_AR;
   const org = SITE + '/#org', site = SITE + '/#website', game = SITE + '/#game';
   const ld = {
     '@context': 'https://schema.org',
@@ -64,7 +69,9 @@ function head(lang, html) {
       {
         '@type': 'VideoGame', '@id': game, name: S.game, alternateName: lang === 'ar' ? ['ستريتك', 'Streetak', 'Streetak: Street Football'] : ['Streetak', 'ستريتك', 'ستريتك: كورة الشارع'],
         url: S.url, description: S.gameDesc, image: OG,
-        screenshot: ['hero', 'neon', 'roof', 'hara', 'sand', 'space'].map(n => `${SITE}/assets/img/${n}.jpg`),
+        screenshot: COURTS.map(n => `${SITE}/assets/img/k/${n}-w.webp`),
+        trailer: { '@type': 'VideoObject', name: S.video, description: S.videoDesc, thumbnailUrl: `${SITE}/assets/video/reel.jpg`,
+          contentUrl: `${SITE}/assets/video/reel.mp4`, uploadDate: '2026-11-05T12:00:00+02:00', duration: REEL_DURATION, inLanguage: lang },
         genre: S.genre, gamePlatform: ['Android', 'iOS', 'Web browser'], operatingSystem: 'Android, iOS, Web',
         applicationCategory: 'GameApplication', applicationSubCategory: 'Sports', playMode: 'MultiPlayer',
         inLanguage: ['ar', 'en'], isAccessibleForFree: true,
@@ -135,6 +142,12 @@ en = en.replace(/<img\b[^>]*\sdata-ta="([^"]+)"[^>]*>/g, (tag, key) => {
   if (EN[key] == null) { missing.add(key); return tag; }
   return tag.replace(/\salt="[^"]*"/, ` alt="${esc(EN[key])}"`);
 });
+for (const [attr, name] of [['data-tl', 'aria-label'], ['data-tt', 'title']]) {
+  en = en.replace(new RegExp(`<[a-z][^>]*\\s${attr}="([^"]+)"[^>]*>`, 'g'), (tag, key) => {
+    if (EN[key] == null) { missing.add(key); return tag; }
+    return tag.replace(new RegExp(`\\s${name}="[^"]*"`), ` ${name}="${esc(EN[key])}"`);
+  });
+}
 if (missing.size) throw new Error('T.en is missing: ' + [...missing].join(', '));
 en = replaceOnce(en, '<html lang="ar" dir="rtl">', '<html lang="en" dir="ltr">');
 en = replaceOnce(en, '<meta charset="utf-8">', '<meta charset="utf-8">\n<base href="/">');
