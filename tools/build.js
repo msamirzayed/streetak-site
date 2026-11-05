@@ -10,7 +10,7 @@ const SITE = 'https://streetak.com';
 const PLAY = 'https://play.google.com/store/apps/details?id=com.streetak.football';
 const APPSTORE = 'https://apps.apple.com/app/id6826257319';
 const WEB_GAME = 'https://play.streetak.com/';
-const OG_AR = SITE + '/assets/img/og.jpg', OG_EN = SITE + '/assets/img/og-en.jpg';
+const OG_AR = SITE + '/assets/img/og.jpg?v=20261105b', OG_EN = SITE + '/assets/img/og-en.jpg?v=20261105b';
 const COURTS = ['sayeda', 'riyadh', 'dubai', 'sand', 'roof', 'street', 'neon', 'space', 'turf'];
 const REEL_DURATION = 'PT18S';
 
